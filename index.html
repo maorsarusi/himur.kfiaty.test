@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>הימור כפייתי</title>
+</head>
+
+
+
+<body style="background-color:hsla(226, 66%, 47%, 0.342);" onload="getResults(), getUsers()">
+    <script src="himur_kfiyaty_all.js"></script>
+    <script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
+
+    <table id="pass" width="100%" align="center" dir="rtl" style="max-width: 350px; display: flex;">
+        <tbody>
+            <tr>
+                <td width="100%" align="center" style="width:100%; padding-top: 10px;">
+                    <select id="username"></select>
+                    <input type="password" id="password" placeholder="סיסמא" onkeyup="getAllBets() , getUserBets(document.getElementById('username').value)">
+                </td>
+            </tr>
+            <tr>
+                <td width="100%" align="center" style="width:100%; padding-top: 10px;">
+                    <button type="button" class="button button2" id="watchGames" onclick="confirmPassword('betsByUser')" style="width:100%;">
+                          <br>משחקים שקיימים<br>
+                          (יש להכניס  שם משתמש וסיסמא)
+                    </button>
+
+                </td>
+            </tr>
+            <tr>
+                <td width="100%" align="center" style="width:100%; padding-top: 10px;">
+                    <button type="button" class="button button2" id="changePassword" onclick="moveToButton('changeUserTable', 'usernameChange' ,'passwordChange')" style="width:100%;">
+                            שנה סיסמא
+                         </button>
+
+                </td>
+            </tr>
+            <tr>
+                <td width="100%" align="center" style="width:100%; padding-top: 10px;">
+                    <button type="button" class="button button2" id="addUserMain" onclick="moveToButton('addUserTable', 'usernameAdd', 'passwordAdd')" style="width:100%;">
+                            הוסף משתמש
+                          </button>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td width="100%" align="center" style="width:100%; padding-top: 10px;">
+                    <button type="button" class="button button2" id="watchTable" onclick="watchTable()" style="width:100%;"> צפה בטבלה
+                    </button>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td width="100%" align="center" style="width:100%; padding-top: 10px;">
+                    <button type="button" class="button button2" id="watchResults" onclick="confirmPassword('betsAllUsers')" style="width:100%;"> צפה בכל ההימורים של כולם
+                    </button>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table id="addUserTable" width="100%" align="center" dir="rtl" style="max-width: 600px; display: none;">
+        <tbody>
+            <tr>
+                <td width="100%" align="center" style="width:100%; padding-top: 10px;">
+                    <input type="text" id="usernameAdd" placeholder="שם משתמש">
+                    <input type="text" id="passwordAdd" placeholder="סיסמא" required>
+                </td>
+            </tr>
+            <tr>
+                <td width="100%" align="center" style="width:100%; padding-top: 10px;">
+
+                    <button type="button" class="button-91 button2" id="addUser" onclick="addUser()" style="width:100%;">
+                            הוסף משתמש
+                           </button>
+
+                    <button type="button" class="button-91 button2" id="returnAdd" onclick="returnBack('addUserTable')" style="width:100%;">
+                            חזור
+                           </button>
+
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table id="changeUserTable" width="100%" align="center" dir="rtl" style="max-width: 600px; display: none;">
+        <tbody>
+            <tr>
+                <td width="100%" align="center" style="width:100%; padding-top: 10px;">
+                    <input type="text" id="usernameChange" placeholder="שם משתמש">
+                    <input type="text" id="passwordChange" placeholder="סיסמא" required>
+                </td>
+            </tr>
+            <tr>
+                <td width="100%" align="center" style="width:100%; padding-top: 10px;">
+                    <a class="bn39"> <span class="bn39span" id="confirmBefore" onclick="confirmBeforeChange()">
+                        אשר סיסמא</span></a>
+                    <a class="bn39" id="changeUser" style="display: none;"> <span class="bn39span" onclick="changeUser()">
+                            שנה סיסמא</span></a>
+                    <a class="bn39"> <span class="bn39span" id="returnChange" onclick="returnBack('changeUserTable')">
+                                חזור</span></a>
+                    <p id="alertNoPassword">
+
+                    </p>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="scores" id="scores" width="100%" align="center" dir="rtl" style="max-width: 600px;  display: none;">
+
+        <tr>
+            <th id="THPlace" class="results">מיקום</th>
+            <th id="THUser" class="results">שם משתמש</th>
+            <th id="THPoints" class="results">ניקוד</th>
+            <th id="THOnfire" class="results">🔥</th>
+            <th id="THCold" class="results">❄️</th>
+            <th id="THSleep" class="results">💤</th>
+            <th id="THStatus" class="results">סטטוס</th>
+        </tr>
+    </table>
+    <div id="h1">
+    </div>
+    <table class="betsByUser" id="betsByUser" align="center" dir="rtl" style=" display: none;">
+        <tr>
+            <th class="betsCalass1" style="background-color:red;">מספר הימור</th>
+            <th class="betsCalass2" style="background-color:red;">סוג הימור</th>
+            <th class="betsCalass3" style="background-color:red;">זמן המשחק</th>
+            <th id="betsCalass4" class="betsCalass" style="background-color:red;">קבוצת בית</th>
+            <th id="betsCalass5" class="betsCalass " style="background-color:red;">קבוצת חוץ</th>
+            <th id="betsCalass6" class="betsCalass " style="background-color:red;">גוף ההימור</th>
+            <th id="betsCalass7" class="betsCalass " style="background-color:red;">הפינה של מאור</th>
+            <th id="betsCalass8" class="betsCalass " style="background-color:red;">הימרת?</th>
+            <th id="betsCalass9" class="betsCalass " style="background-color:red;">סטטוס הימור</th>
+            <th id="betsCalass10" class="betsCalass " style="background-color:red;">מה הימרת?</th>
+
+        </tr>
+    </table>
+    <div style="padding-left:300px;">
+        <table class="betsByUser" id="betsAllUsers" width="100%" align="center" dir="rtl" style="max-width: 600px;  display: none;">
+            <tr>
+                <td>
+                    <button type="button" class="button-91 button2" id="fliterByBet" onclick="filteringByBet()" style="width:100%;">
+                        סנן לפי הימור
+                       </button>
+
+                </td>
+                <td>
+                    <button type="button" class="button-91 button2" id="filterByUser" onclick="filteringByUser()" style="width:100%;">
+                        סנן לפי מתמודד
+                       </button>
+
+                </td>
+                <td>
+                    <button type="button" class="button-91 button2" id="returnBackAll" onclick="returnBack('betsAllUsers')" style="width:100%;">
+                       חזור למסך הראשי
+                       </button>
+
+                </td>
+                <td>
+                    <select id="chooseFilter" onchange="filteringSelect()"></select>
+                </td>
+                <td>
+                    <h1 id="allUsersBetTitle"></h1>
+                </td>
+            </tr>
+            <tr>
+                <th class="betsCalassA" style=" background-color:red; ">שם המהמר</th>
+                <th class="betsCalassB" style=" background-color:red; ">מספר הימור</th>
+                <th class="betsCalassC" style=" background-color:red; ">סוג הימור</th>
+                <th class="betsCalassD" style=" background-color:red; ">זמן המשחק</th>
+                <th id="betsCalassE" class="betsCalass " style=" background-color:red; ">קבוצת בית</th>
+                <th id="betsCalassF" class="betsCalass " style=" background-color:red; ">קבוצת חוץ</th>
+                <th id="betsCalassG" class="betsCalass " style=" background-color:red; ">גוף ההימור</th>
+                <th id="betsCalassH" class="betsCalass " style=" background-color:red; ">מה הימר?</th>
+            </tr>
+        </table>
+    </div>
+    <table style="padding-left:1100px; ">
+        <tr>
+            <td>
+                <div>
+                    <p id="resultWriteAwayHT"></p>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <p id="resultWriteHomeHT"></p>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div>
+                    <p id="resultWriteAway"></p>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <p id="resultWriteHome"></p>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+
+</body>
+
+</html>
