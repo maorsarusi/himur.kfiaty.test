@@ -684,8 +684,8 @@ function getBets(user) {
         var elem = document.getElementById("type" + id);
         elem.setAttribute("betType", type);
         insertRowToTable(row, createTimer(time, id), 2, "hour", id, "betsCalass", 0);
-        insertRowToTable(row, betHomeHT + breakline + betHome, 3, "betH", id, "betsCalass1", 1);
-        insertRowToTable(row, betAwayHT + breakline + betAway, 4, "betA", id, "betsCalass1", 1);
+        insertRowToTable(row, betHomeHT + breakline + betHome, 3, "betH", id, "betsCalass", 1);
+        insertRowToTable(row, betAwayHT + breakline + betAway, 4, "betA", id, "betsCalass", 1);
         insertRowToTable(row, body, 5, "body", id, "betsCalass", 0);
         insertRowToTable(row, maor, 6, "bodyBet", id, "betsCalass", 0);
         insertRowToTable(row, flag, 7, id, 6, "betsCalass", 0);
@@ -699,7 +699,6 @@ function getBets(user) {
         elemH.setAttribute("awayTeam", awaybet);
     }
 }
-
 function getLimit(str) {
     var matches = str.match(/(\d+)/);
     if (matches) {
