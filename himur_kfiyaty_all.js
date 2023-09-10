@@ -679,7 +679,8 @@ function getBets(user) {
             betAwayHT = createLabel("Away", awaybet) + '<input type="text"' + 'id="AwayHT' + id + `" onkeyup="writeResults('AwayHT', ${id},'${awaybet}',',')" style="width :25%" ${disabled}/>`;
             betHomeHT = createLabel("home", homebet) + '<input type="text"' + 'id="HomeHT' + id + `" onkeyup="writeResults('HomeHT', ${id},'${homebet}', ' - מחצית')" style="width : 25%" ${disabled}/>`;
         }
-        insertRowToTable(row, id, 0, "id", id, "betsCalass", 0)
+        var idDisplay = `${id} / ${StaticForFirebaseUser.allBets[i]["perYear"]}`
+        insertRowToTable(row, idDisplay, 0, "id", id, "betsCalass", 0)
         insertRowToTable(row, typeH, 1, "type", id, "betsCalass", 0)
         var elem = document.getElementById("type" + id);
         elem.setAttribute("betType", type);
@@ -699,6 +700,7 @@ function getBets(user) {
         elemH.setAttribute("awayTeam", awaybet);
     }
 }
+
 function getLimit(str) {
     var matches = str.match(/(\d+)/);
     if (matches) {
