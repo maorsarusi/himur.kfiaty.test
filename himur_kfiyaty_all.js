@@ -656,7 +656,7 @@ function getBets(user) {
         id = StaticForFirebaseUser.allBets[i]["totalId"];
         type = StaticForFirebaseUser.allBets[i]["type"];
         var maorVal = StaticForFirebaseUser.allBets[i]["maor"];
-        var maorBtn = `<button id="button${id}" onclick="watchMaor('${i}')">צפה בפינה</button>`;
+        var maorBtn = `<button id="buttonMaor${id}" onclick="watchMaor('${i}')">צפה בפינה</button>`;
         maor = (typeof maorVal === 'undefined' || maorVal == '') ? 'אין פינה' : maorBtn;
         typeH = type == 'soccer bet' ? 'כדורגל' : 'כדורסל';
 
