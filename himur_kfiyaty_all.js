@@ -538,7 +538,7 @@ function moveToButton(table, user, pass) {
 }
 
 function confirmPassword(table) {
-    while (StaticForFirebaseUser.allByUserId === []) {
+    while (StaticForFirebaseUser.allByUserId == []) {
         console.log("while")
     }
     var user = document.getElementById("username").value;
@@ -678,8 +678,8 @@ function getBets(user) {
         let btn = operation != 'זמן ההימור עבר' ? `<button id="button${id}">` + operation + '</button>' : operation;
         let isButton = operation != 'זמן ההימור עבר' ? 2 : 0;
         let disabled = operation == 'זמן ההימור עבר' ? 'disabled' : '';
-        var betAway = createLabel("Away", awaybet) + '<input type="text"' + 'id="Away' + id + `" onkeyup="writeResults('Away', ${id},'${awaybet}',',')" style="width : 25%; height: 25%; align-text: right" ${disabled}/>`;
-        var betHome = createLabel("home", homebet) + '<input type="text"' + 'id="Home' + id + `" onkeyup="writeResults('Home', ${id},'${homebet}', ' - סיום')" style="width : 25%; align-text: right" ${disabled}/>`;
+        var betAway = createLabel("Away", awaybet) + '<input type="text" inputmode="numeric" pattern="[0-9]*"' + 'id="Away' + id + `" onkeyup="writeResults('Away', ${id},'${awaybet}',',')" style="width : 25%; height: 25%; align-text: right" ${disabled}/>`;
+        var betHome = createLabel("home", homebet) + '<input type="text" inputmode="numeric" pattern="[0-9]*"' + 'id="Home' + id + `" onkeyup="writeResults('Home', ${id},'${homebet}', ' - סיום')" style="width : 25%; align-text: right" ${disabled}/>`;
         var betAwayHT = "";
         var betHomeHT = "";
         if (includes) {
