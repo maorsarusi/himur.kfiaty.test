@@ -635,7 +635,8 @@ function writeResults(inputPre, id, team, time) {
 }
 
 function watchMaor(bet) {
-    alert(StaticForFirebaseUser.allBets[bet]["maor"]);
+    var text = StaticForFirebaseUser.allBets[bet]["maor"].replaceAll('</br>', '');
+    alert(text);
 
 }
 
