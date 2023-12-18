@@ -29,21 +29,47 @@ class StaticForFirebaseUser {
 var userBets = [];
 var colors = ['#ADD8E6', 'yellow', 'grey', 'orange', '#FFF8DC', 'purple', '#7CFC00', '#00CED1'];
 
+function insertIntoList(elem) {
+    var l = document.createElement("list");
+    var ol = document.createElement("ol");
+
+    l.append(ol);
+    for (let i = 0; i < elem.length; i++) {
+        var y = document.createElement("LI");
+        var t = document.createTextNode(elem[i]);
+        y.appendChild(t);
+        ol.append(y);
+    }
+
+    return l;
+
+}
+
 function insertAllTable() {
     var TRs = isUser ? usersTrs : betsTrs;
     var table = document.getElementById("betsAllUsers");
     for (var i in TRs) {
         for (j in trs) {
-            if (j.includes(TRs[i])) {
-                var elem = isUser ? document.getElementById(j) : document.getElementById(trs[j][1]);
-                elem.innerHTML = "";
-                elem.remove();
+            if (isUser) {
+                if (j.includes(TRs[i])) {
+                    var elem = document.getElementById(j);
+                    elem.innerHTML = "";
+                    elem.remove();
+                }
+            } else {
+                if (trs[j][1].toString() == TRs[i]) {
+                    var elem = document.getElementById(j);
+                    elem.innerHTML = "";
+                    elem.remove();
+                }
+
+
             }
         }
     };
     for (i in trs) {
         var row = table.insertRow()
-        row.id = trs[i][1];
+        row.id = i;
         row.innerHTML = trs[i][0];
     }
     isFiltered = false;
@@ -67,7 +93,8 @@ function filteringSelectByBet() {
                 if (document.getElementById(i + j)) {
                     var elemForWrite = document.getElementById(i + j);
                     var id = document.getElementById("id" + i + j).innerHTML;
-                    trs[i + id] = [elemForWrite.innerHTML, i + j];
+                    //var name = getKeyByValue(usersTrs, i)
+                    trs[i + j] = [elemForWrite.innerHTML, filterArr[i][j]["id"], getKeyByValue(filterArr, i)];
                     elemForWrite.innerHTML = "";
                     elemForWrite.remove();
                 }
@@ -76,8 +103,8 @@ function filteringSelectByBet() {
     }
 
     for (var i in trs) {
-        if (i.includes(selectVal)) {
-            trSelected[trs[i][1]] = trs[i][0];
+        if (String(trs[i][1]) == selectVal) {
+            trSelected[i] = trs[i][0];
         }
     }
     var table = document.getElementById("betsAllUsers");
@@ -108,7 +135,7 @@ function filteringSelectByUser() {
         for (var j in filterArr[usersTrs[i]]) {
             var id = filterArr[usersTrs[i]][j]["id"];
             var elemForWrite = document.getElementById(usersTrs[i] + j);
-            trs[usersTrs[i] + j] = [elemForWrite.innerHTML, usersTrs[i] + j];
+            trs[usersTrs[i] + j] = [elemForWrite.innerHTML, usersTrs[i] + j, usersTrs[i]];
             elemForWrite.innerHTML = "";
             elemForWrite.remove();
         }
@@ -257,8 +284,9 @@ function getBetsByUser(ids, metadata, user) {
                 colored_staus_background("away" + i + j, colors[count]);
                 var elem = document.getElementById("type" + i + j);
                 elem.setAttribute("betType", type);
-                var body = type == 'soccer bet' ? metadata[id][3] : metadata[id][3].join("<br>")
-                insertRowToTable(row, body, 6, "body", i + j, "betsCalass", 0);
+                var body = type == 'soccer bet' ? metadata[id][3] : insertIntoList(metadata[id][3]);
+                var maorBtn = type == 'soccer bet' ? body : `<button id="buttonMaor${id}" onclick="alert('${ body.textContent} ${body.innerText }')">צפה</button>`;
+                insertRowToTable(row, maorBtn, 6, "body", i + j, "betsCalass", 0);
                 colored_staus_background("body" + i + j, colors[count]);
                 insertRowToTable(row, result, 7, "Status", i + j, "betsCalass", 0);
                 colored_staus_background("Status" + i + j, colors[count]);
@@ -381,16 +409,16 @@ function insertRowToTable(row, data, count, attribute, user, classChosen, isButt
     c.innerHTML = data;
     c.id = attribute + user;
     c.style.textAlign = 'center';
-    if (attribute != 'id') {
-        if (attribute == 'body' && document.getElementById("type" + user).getAttribute("bettype") == 'basketball bet') {
-            c.style.textAlign = 'right';
-        }
+    // if (attribute != 'id') {
+    if (attribute == 'body' && document.getElementById("type" + user).getAttribute("bettype") == 'basketball bet') {
+        c.style.textAlign = 'right';
+        //}
     }
 
     c.setAttribute('class', classChosen)
     if (isButton == 2) {
         c.setAttribute('onclick', 'navigateBetButton(this)')
-        c.setAttribute('idBet', user)
+        c.setAttribute(attribute + user, user)
     } else if (isButton == 1) {
         c.setAttribute('type', 'text');
         c.setAttribute('placeholder', data);
