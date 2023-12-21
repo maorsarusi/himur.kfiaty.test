@@ -29,20 +29,12 @@ class StaticForFirebaseUser {
 var userBets = [];
 var colors = ['#ADD8E6', 'yellow', 'grey', 'orange', '#FFF8DC', 'purple', '#7CFC00', '#00CED1'];
 
-function insertIntoList(elem) {
-    var l = document.createElement("list");
-    var ol = document.createElement("ol");
-
-    l.append(ol);
-    for (let i = 0; i < elem.length; i++) {
-        var y = document.createElement("LI");
-        var t = document.createTextNode(elem[i]);
-        y.appendChild(t);
-        ol.append(y);
+function convertToString(elem) {
+    var str = '';
+    for (var i = 0; i < elem.length; i++) {
+        str += elem[i] + '</br>';
     }
-
-    return l;
-
+    return str;
 }
 
 function insertAllTable() {
@@ -284,9 +276,10 @@ function getBetsByUser(ids, metadata, user) {
                 colored_staus_background("away" + i + j, colors[count]);
                 var elem = document.getElementById("type" + i + j);
                 elem.setAttribute("betType", type);
-                var body = type == 'soccer bet' ? metadata[id][3] : insertIntoList(metadata[id][3]);
-                var maorBtn = type == 'soccer bet' ? body : `<button id="buttonMaor${id}" onclick="alert('${ body.textContent} ${body.innerText }')">צפה</button>`;
-                insertRowToTable(row, maorBtn, 6, "body", i + j, "betsCalass", 0);
+                var body = type == 'soccer bet' ? metadata[id][3] : convertToString(metadata[id][3]);
+
+                //var maorBtn = type == 'soccer bet' ? body : `<button id="buttonMaor${id}" onclick="alert('${ body.textContent} ${body.innerText }')">צפה</button>`;
+                insertRowToTable(row, body.replaceAll(',', '</br>'), 6, "body", i + j, "betsCalass", 0);
                 colored_staus_background("body" + i + j, colors[count]);
                 insertRowToTable(row, result, 7, "Status", i + j, "betsCalass", 0);
                 colored_staus_background("Status" + i + j, colors[count]);
