@@ -32,7 +32,7 @@ var colors = ['#ADD8E6', 'yellow', 'grey', 'orange', '#FFF8DC', 'purple', '#7CFC
 function convertToString(elem) {
     var str = '';
     for (var i = 0; i < elem.length; i++) {
-        str += (i == 0 ? '' : "\'") + elem[i] + "\'" + '\n';
+        str += elem[i] + breakline;
     }
     return str;
 }
@@ -277,8 +277,8 @@ function getBetsByUser(ids, metadata, user) {
                 var elem = document.getElementById("type" + i + j);
                 elem.setAttribute("betType", type);
                 var body = type == 'soccer bet' ? metadata[id][3] : convertToString(metadata[id][3]);
-                var maorBtn = type == 'soccer bet' ? body : `<button id="buttonMaor${id}" onclick="alert('${body}')">צפה</button>`;
-                insertRowToTable(row, maorBtn, 6, "body", i + j, "betsCalass", 0);
+                // var maorBtn = type == 'soccer bet' ? body : `<button id="buttonMaor${id}" onclick="alert('${body}')">צפה</button>`;
+                insertRowToTable(row, body, 6, "body", i + j, "betsCalass", 0);
                 colored_staus_background("body" + i + j, colors[count]);
                 insertRowToTable(row, result, 7, "Status", i + j, "betsCalass", 0);
                 colored_staus_background("Status" + i + j, colors[count]);
